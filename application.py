@@ -14,14 +14,10 @@ db = SQLAlchemy(app)
 def index():
 
     reg_form = RegistrationForm()
+    
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
-
-        # Check if username is already being used
-        user_object = User.query.filter_by(username=username).first()
-        if user_object: 
-            return "Someone else has taken this username!"
 
         # Add User to database
         user = User(username=username, password=password)
