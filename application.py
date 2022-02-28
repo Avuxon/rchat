@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for
 from wtform_fields import *
 from models import *
 
+
 #configure application
 app = Flask(__name__)
 app.secret_key = 'replace later'
@@ -20,8 +21,13 @@ def index():
         username = reg_form.username.data
         password = reg_form.password.data
 
+        # Hash password
+        hashed_pswd = pbkdf2_sha256.hash(password)
+        # automatically adds a 16 byte salt and 29,000 iterations by default
+
+
         # Add User to database
-        user = User(username=username, password=password)
+        user = User(username=username, password=hashed_pswd)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('login'))
